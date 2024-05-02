@@ -1,0 +1,8 @@
+certifi==2024.2.2
+charset-normalizer==3.3.2
+idna==3.7
+requests==2.31.0
+setuptools==68.2.2
+urllib3==2.2.1
+wheel==0.41.2
+youtube-transcript-api==0.6.2
