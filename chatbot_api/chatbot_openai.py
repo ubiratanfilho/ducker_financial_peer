@@ -1,53 +1,18 @@
-import dotenv
-from langchain_openai import ChatOpenAI
-from langchain.prompts import (
-    PromptTemplate,
-    SystemMessagePromptTemplate,
-    HumanMessagePromptTemplate,
-    ChatPromptTemplate,
+from langchain_core.chat_history import (
+    BaseChatMessageHistory,
+    InMemoryChatMessageHistory,
 )
-from langchain_core.messages import AIMessage
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+import dotenv
 import os
 
 dotenv.load_dotenv()
 
-finance_template_str = """
-Your function is to teach users about financial education, especially about the nuances of the Brazilian market. Do not respond to anything that is not related to questions about finance. Be polite and clear in your answers. If you don't know the answer to a question, say so.
-"""
-
-finance_system_prompt = SystemMessagePromptTemplate(
-    prompt=PromptTemplate(
-        input_variables=[],
-        template=finance_template_str,
-    )
-)
-
-human_template_str = """
-A partir do meu perfil de investidor abaixo (no formato pergunta:resposta, o dígito representa qual resposta se refere):
-{user_info}
-
-{question}
-"""
-finance_human_prompt = HumanMessagePromptTemplate(
-    prompt=PromptTemplate(
-        input_variables=["question", "user_info"],
-        template=human_template_str,
-    )
-)
-messages = [finance_system_prompt, finance_human_prompt]
-
-finance_prompt_template = ChatPromptTemplate(
-    input_variables=["question", "user_info"],
-    messages=messages,
-)
-
-chat_model = ChatOpenAI(model=os.getenv("OPEN_AI_MODEL"), temperature=0)
-
-finance_chain = finance_prompt_template | chat_model
-
-
-## example usage
-ai_questions = [
+# System questions
+system_questions = [
 """Olá! Eu sou o Ducker, seu assistente de investimentos. Para que eu possa te ajudar, vou fazer algumas perguntas. Qual é o seu nome?""",
 """Qual é o seu objetivo financeiro? Digite o número correspondente:
 
@@ -65,16 +30,53 @@ ai_questions = [
 ]
 
 user_info = {}
-for ai_question in ai_questions:
-    print(f"Ducker: {AIMessage(ai_question).content}")
+for system_question in system_questions:
+    print(f"Ducker: {system_question}")
     user_answer = input("Você: ")
-    user_info[ai_question] = user_answer
+    user_info[system_question] = user_answer
     print("\n")
     
 print("\nPerfeito! Agora que eu já sei um pouco mais sobre você, me faça uma pergunta sobre investimentos.")
 
+
+
+# creating LLM Chatbot
+store = {}
+def get_session_history(session_id: str) -> BaseChatMessageHistory:
+    if session_id not in store:
+        store[session_id] = InMemoryChatMessageHistory()
+    return store[session_id]
+
+model = ChatOpenAI(model=os.getenv("OPEN_AI_MODEL"), temperature=0)
+with_message_history = RunnableWithMessageHistory(model, get_session_history)
+
+prompt = ChatPromptTemplate.from_messages(
+    [
+        (
+            "system",
+            """Your function is to teach users about financial education, especially about the nuances of the Brazilian market. 
+            Personalize your answers according to the user's investment profile: {user_info}
+            Do not respond to anything that is not related to questions about finance. 
+            Be polite and clear in your answers. 
+            If you don't know the answer to a question, say so.""",
+        ),
+        MessagesPlaceholder(variable_name="messages"),
+    ]
+)
+chain = prompt | model
+
+with_message_history = RunnableWithMessageHistory(
+    chain, 
+    get_session_history,
+    input_messages_key="messages",
+)
+config = {"configurable": {"session_id": "abc11"}}
+
 while True:
-    user_question = input("Você: ")
-    ai_response = finance_chain.invoke({"question": user_question, "user_info":user_info}).content
-    print(f"Ducker: {ai_response}")
-    print("\n")
+    question = input("\nVocê: ")
+    response = with_message_history.invoke(
+        {'messages': [HumanMessage(content=question)], 'user_info': user_info},
+        config=config,
+    )
+
+    print('\nDucker:', response.content)
