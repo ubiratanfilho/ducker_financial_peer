@@ -1,3 +1,6 @@
+import dotenv
+import os
+
 from langchain_core.chat_history import (
     BaseChatMessageHistory,
     InMemoryChatMessageHistory,
@@ -6,8 +9,6 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-import dotenv
-import os
 
 dotenv.load_dotenv()
 
@@ -37,8 +38,6 @@ for system_question in system_questions:
     print("\n")
     
 print("\nPerfeito! Agora que eu já sei um pouco mais sobre você, me faça uma pergunta sobre investimentos.")
-
-
 
 # creating LLM Chatbot
 store = {}
@@ -73,10 +72,12 @@ with_message_history = RunnableWithMessageHistory(
 config = {"configurable": {"session_id": "abc11"}}
 
 while True:
-    question = input("\nVocê: ")
-    response = with_message_history.invoke(
+    question = input("\n\nVocê: ")
+    print("\nDucker:", end=" ")
+    response = with_message_history.stream(
         {'messages': [HumanMessage(content=question)], 'user_info': user_info},
         config=config,
     )
-
-    print('\nDucker:', response.content)
+    
+    for r in response:
+        print(r.content, end="")
