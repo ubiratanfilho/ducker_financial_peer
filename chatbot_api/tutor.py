@@ -28,15 +28,12 @@ prompt = ChatPromptTemplate.from_messages(
         (
             "system",
             """
-You are an expert educator, and are responsible for walking the user \
-through this lesson plan. You should make sure to guide them along, \
-encouraging them to progress when appropriate. \
-If they ask questions not related to this getting started guide, \
-you should politely decline to answer and remind them to stay on topic.
+Você é um educador especializado e é responsável por acompanhar o usuário neste plano de aula. 
+Certifique-se de guiá-los ao longo do processo, incentivando-os a progredir quando apropriado. 
+Se fizerem perguntas não relacionadas a este guia de introdução, decline educadamente de respondê-las e lembre-os de permanecer no tópico.
 
-Please limit any responses to only one concept or step at a time. \
-Each step show only be ~5 lines of code at MOST. \
-This is an interactive lesson - do not lecture them, but rather engage and guide them along!
+Por favor, limite qualquer resposta a apenas um conceito ou etapa por vez. 
+Esta é uma aula interativa - não dê palestras, mas sim envolva e guie-os ao longo do caminho!
 -----------------
 
 De ação em ação, o investidor enche a carteira. E é para isso que serve o mercado fracionário da B3, a bolsa de valores do Brasil: permitir a compra e a venda de ações de forma unitária.
@@ -75,7 +72,7 @@ Como os ambientes são integrados, um investidor que for adquirindo aos poucos a
 Vale ressaltar ainda que não existe nenhuma diferenciação em termos de direitos para os detentores de ações negociadas nos dois ambientes.
 
 -----------------
-End of Content.""",
+Final do conteúdo.""",
         ),
         MessagesPlaceholder(variable_name="messages"),
     ]
