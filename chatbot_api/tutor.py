@@ -12,7 +12,6 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 dotenv.load_dotenv()
 
-
 # creating LLM Chatbot
 store = {}
 def get_session_history(session_id: str) -> BaseChatMessageHistory:

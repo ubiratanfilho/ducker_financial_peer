@@ -6,6 +6,8 @@ OUT_DIR = 'data/'
 # URL da página que você quer fazer o scraping
 guides = {
     'mercado_fracionario_de_acoes': 'https://www.infomoney.com.br/guias/mercado-fracionario-de-acoes/',
+    'tesouro_direto': 'https://www.infomoney.com.br/guias/tesouro-direto/',
+    'inflacao': 'https://www.infomoney.com.br/guias/inflacao/',
 }
 
 for guide_name, url in guides.items():
