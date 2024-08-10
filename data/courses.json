@@ -1,0 +1,19 @@
+{
+    "courses": [
+        {
+            "id": 1,
+            "name": "Mercado fracionário de ações: o que é e como investir",
+            "url": "https://www.infomoney.com.br/guias/mercado-fracionario-de-acoes/"
+        },
+        {
+            "id": 2,
+            "name": "Tesouro Direto: guia completo para investir em títulos públicos",
+            "url": "https://www.infomoney.com.br/guias/tesouro-direto/"
+        },
+        {
+            "id": 3,
+            "name": "Taxa Selic: O que é, para que serve e como influencia seus investimentos",
+            "url": "https://www.infomoney.com.br/guias/taxa-selic/"
+        }
+    ]
+}
