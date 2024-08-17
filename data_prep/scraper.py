@@ -1,40 +1,34 @@
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 
-# URL do site de onde queremos extrair os dados
-url = "https://www.infomoney.com.br/guias/"
+OUT_DIR = 'data/'
 
-# Realiza a requisição para o site
-response = requests.get(url)
-# Verifica se a requisição foi bem-sucedida
-if response.status_code == 200:
-    # Parseia o conteúdo HTML
-    soup = BeautifulSoup(response.content, 'html.parser')
-    
-    # Encontra todos os artigos de educação financeira
-    articles = soup.find_all('article', class_='card__Content-sc-1uk0bgb-6')
-    
-    # Lista para armazenar os dados dos artigos
-    data = []
-    
-    # Extrai os dados de cada artigo
-    for article in articles:
-        title = article.find('h3').text.strip()
-        link = article.find('a')['href']
+# URL da página que você quer fazer o scraping
+guides = {
+    'mercado_fracionario_de_acoes': 'https://www.infomoney.com.br/guias/mercado-fracionario-de-acoes/',
+    'tesouro_direto': 'https://www.infomoney.com.br/guias/tesouro-direto/',
+    'inflacao': 'https://www.infomoney.com.br/guias/inflacao/',
+}
+
+for guide_name, url in guides.items():
+    # Fazendo uma requisição para o site
+    response = requests.get(url)
+
+    # Checando se a requisição foi bem-sucedida
+    if response.status_code == 200:
+        # Parsing do conteúdo HTML da página
+        soup = BeautifulSoup(response.content, 'html.parser')
         
-        # Adiciona os dados extraídos à lista
-        data.append({
-            'Title': title,
-            'Link': link
-        })
-    
-    # Cria um DataFrame a partir dos dados extraídos
-    df = pd.DataFrame(data)
-    
-    # Salva os dados em um arquivo CSV
-    df.to_csv('financial_education_articles.csv', index=False)
-    
-    print("Dados extraídos e salvos com sucesso!")
-else:
-    print(f"Falha na requisição. Status code: {response.status_code}")
+        # Encontrando o conteúdo da notícia
+        article = soup.find('article')  # O conteúdo geralmente está dentro da tag <article>
+        
+        # Extraindo o texto da notícia
+        if article:
+            paragraphs = article.find_all('p')
+            text = ' '.join([p.get_text() for p in paragraphs])
+            with open(f'{OUT_DIR}{guide_name}.txt', 'w', encoding='utf-8') as f:
+                f.write(text)
+        else:
+            print("Artigo não encontrado.")
+    else:
+        print(f"Falha ao acessar a página. Status code: {response.status_code}")
