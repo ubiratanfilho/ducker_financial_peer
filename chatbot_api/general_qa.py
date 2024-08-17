@@ -71,13 +71,13 @@ general_qa_chain = RunnableWithMessageHistory(
 )
 config = {"configurable": {"session_id": "abc11"}}
 
-# while True:
-#     question = input("\n\nVocê: ")
-#     print("\nDucker:", end=" ")
-#     response = general_qa_chain.stream(
-#         {'messages': [HumanMessage(content=question)], 'user_info': user_info},
-#         config=config,
-#     )
+while True:
+    question = input("\n\nVocê: ")
+    print("\nDucker:", end=" ")
+    response = general_qa_chain.stream(
+        {'messages': [HumanMessage(content=question)], 'user_info': user_info},
+        config=config,
+    )
     
-#     for r in response:
-#         print(r.content, end="")
+    for r in response:
+        print(r.content, end="")
