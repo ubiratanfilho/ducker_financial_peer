@@ -16,7 +16,7 @@ import json
 
 dotenv.load_dotenv()
 
-# carregar o vector store e retriever
+### Carregar o vector store e retriever
 with open('data/courses.json', 'r', encoding='utf-8') as file:
     courses = json.load(file)["courses"]
 loader = WebBaseLoader(
@@ -27,6 +27,7 @@ loader = WebBaseLoader(
         )
     ),
 )
+
 docs = loader.load()
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
@@ -34,7 +35,7 @@ splits = text_splitter.split_documents(docs)
 vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings())
 retriever = vectorstore.as_retriever()
 
-# System questions
+### Perguntas iniciais sobre o usuário
 system_questions = [
 """Olá! Eu sou o Ducker, seu assistente de investimentos. Para que eu possa te ajudar, vou fazer algumas perguntas. Qual é o seu nome?""",
 """Qual é o seu objetivo financeiro? Digite o número correspondente:
@@ -61,13 +62,15 @@ for system_question in system_questions:
     
 print("\nDucker: Perfeito! Agora que eu já sei um pouco mais sobre você, posso tanto te ensinar sobre educação financeira a partir dos cursos disponíveis, ou então, faça qualquer pergunta para mim.")
 
+### Exibir cursos disponíveis
 course = print("\nDucker: Cursos disponíveis:")
 for course in courses:
     print(f"- {course['name']}")
 
-
+### Inicializar o modelo de linguagem
 llm = ChatOpenAI(model=os.getenv("OPEN_AI_MODEL"), temperature=0)
-### Contextualize question ###
+
+### Etapa de contextualização
 contextualize_q_system_prompt = """Given a chat history and the latest user question \
 which might reference context in the chat history, formulate a standalone question \
 which can be understood without the chat history. Do NOT answer the question, \
@@ -84,7 +87,7 @@ history_aware_retriever = create_history_aware_retriever(
 )
 
 
-### Answer question ###
+### Etapa de perguntas e respostas
 qa_system_prompt = """
 Você é um educador especializado e é responsável por acompanhar o usuário neste plano de aula. 
 Certifique-se de guiá-los ao longo do processo, incentivando-os a progredir quando apropriado. 
@@ -107,7 +110,7 @@ question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
 rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
 
 
-### Statefully manage chat history ###
+### Salvar o histórico da conversa
 store = {}
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
     if session_id not in store:
