@@ -12,32 +12,32 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
 dotenv.load_dotenv()
 
-# System questions
-system_questions = [
-"""Olá! Eu sou o Ducker, seu assistente de investimentos. Para que eu possa te ajudar, vou fazer algumas perguntas. Qual é o seu nome?""",
-"""Qual é o seu objetivo financeiro? Digite o número correspondente:
+# # System questions
+# system_questions = [
+# """Olá! Eu sou o Ducker, seu assistente de investimentos. Para que eu possa te ajudar, vou fazer algumas perguntas. Qual é o seu nome?""",
+# """Qual é o seu objetivo financeiro? Digite o número correspondente:
 
-1. Juntar dinheiro para a aposentadoria
-2. Comprar um carro
-3. Comprar uma casa
-4. Fazer uma viagem
-5. Outro (especifique)
-""",
-"""Qual é o seu perfil de investidor? Digite o número correspondente:
-1. Conservador - prefere investimentos de baixo risco
-2. Moderado - aceita um pouco de risco para obter maior rentabilidade
-3. Agressivo - busca obter a maior rentabilidade possível, mesmo que isso implique em correr mais riscos
-"""
-]
+# 1. Juntar dinheiro para a aposentadoria
+# 2. Comprar um carro
+# 3. Comprar uma casa
+# 4. Fazer uma viagem
+# 5. Outro (especifique)
+# """,
+# """Qual é o seu perfil de investidor? Digite o número correspondente:
+# 1. Conservador - prefere investimentos de baixo risco
+# 2. Moderado - aceita um pouco de risco para obter maior rentabilidade
+# 3. Agressivo - busca obter a maior rentabilidade possível, mesmo que isso implique em correr mais riscos
+# """
+# ]
 
-user_info = {}
-for system_question in system_questions:
-    print(f"Ducker: {system_question}")
-    user_answer = input("Você: ")
-    user_info[system_question] = user_answer
-    print("\n")
+# user_info = {}
+# for system_question in system_questions:
+#     print(f"Ducker: {system_question}")
+#     user_answer = input("Você: ")
+#     user_info[system_question] = user_answer
+#     print("\n")
     
-print("\nPerfeito! Agora que eu já sei um pouco mais sobre você, me faça uma pergunta sobre investimentos.")
+# print("\nPerfeito! Agora que eu já sei um pouco mais sobre você, me faça uma pergunta sobre investimentos.")
 
 # creating LLM Chatbot
 store = {}
@@ -64,20 +64,20 @@ Se não souber a resposta para uma pergunta, diga isso.""",
 )
 chain = prompt | model
 
-with_message_history = RunnableWithMessageHistory(
+general_qa_chain = RunnableWithMessageHistory(
     chain, 
     get_session_history,
     input_messages_key="messages",
 )
 config = {"configurable": {"session_id": "abc11"}}
 
-while True:
-    question = input("\n\nVocê: ")
-    print("\nDucker:", end=" ")
-    response = with_message_history.stream(
-        {'messages': [HumanMessage(content=question)], 'user_info': user_info},
-        config=config,
-    )
+# while True:
+#     question = input("\n\nVocê: ")
+#     print("\nDucker:", end=" ")
+#     response = general_qa_chain.stream(
+#         {'messages': [HumanMessage(content=question)], 'user_info': user_info},
+#         config=config,
+#     )
     
-    for r in response:
-        print(r.content, end="")
+#     for r in response:
+#         print(r.content, end="")

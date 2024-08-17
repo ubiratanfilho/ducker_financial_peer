@@ -11,9 +11,6 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_chroma import Chroma
-from langchain_openai import OpenAIEmbeddings
 
 dotenv.load_dotenv()
 
@@ -60,7 +57,7 @@ Final do conteúdo.""",
 
 chain = prompt | model
 
-with_message_history = RunnableWithMessageHistory(
+tutor_chain = RunnableWithMessageHistory(
     chain, 
     get_session_history,
     input_messages_key="messages",
@@ -70,7 +67,7 @@ config = {"configurable": {"session_id": "abc11"}}
 question = "Me explique passo a passo sobre o curso escolhido. Faça um sumário do conteúdo e pergunte por onde quero começar."
 while True:
     print("\nDucker:", end=" ")
-    response = with_message_history.stream(
+    response = tutor_chain.stream(
         {'messages': [HumanMessage(content=question)]},
         config=config,
     )
