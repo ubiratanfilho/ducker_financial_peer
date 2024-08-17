@@ -12,18 +12,15 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 import dotenv
 import os
 from langchain_core.messages import HumanMessage
+import json
 
 dotenv.load_dotenv()
 
-llm = ChatOpenAI(model=os.getenv("OPEN_AI_MODEL"), temperature=0)
-
-
-### Construct retriever ###
+# carregar o vector store e retriever
+with open('data/courses.json', 'r', encoding='utf-8') as file:
+    courses = json.load(file)["courses"]
 loader = WebBaseLoader(
-    web_paths=(
-        "https://www.infomoney.com.br/guias/mercado-fracionario-de-acoes/",
-        "https://www.infomoney.com.br/guias/tesouro-direto/",
-    ),
+    web_paths=tuple([course['url'] for course in courses]),
     bs_kwargs=dict(
         parse_only=bs4.SoupStrainer(
             class_=("imds-font-headline mt-4 mb-0", 'lead lh-sm mt-2 mb-0 col-xxl-10', 'article-body mt-4')
@@ -37,7 +34,39 @@ splits = text_splitter.split_documents(docs)
 vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings())
 retriever = vectorstore.as_retriever()
 
+# System questions
+system_questions = [
+"""Olá! Eu sou o Ducker, seu assistente de investimentos. Para que eu possa te ajudar, vou fazer algumas perguntas. Qual é o seu nome?""",
+"""Qual é o seu objetivo financeiro? Digite o número correspondente:
 
+1. Juntar dinheiro para a aposentadoria
+2. Comprar um carro
+3. Comprar uma casa
+4. Fazer uma viagem
+5. Outro (especifique)
+""",
+"""Qual é o seu perfil de investidor? Digite o número correspondente:
+1. Conservador - prefere investimentos de baixo risco
+2. Moderado - aceita um pouco de risco para obter maior rentabilidade
+3. Agressivo - busca obter a maior rentabilidade possível, mesmo que isso implique em correr mais riscos
+"""
+]
+
+user_info = {}
+for system_question in system_questions:
+    print(f"Ducker: {system_question}")
+    user_answer = input("Você: ")
+    user_info[system_question] = user_answer
+    print("\n")
+    
+print("\nDucker: Perfeito! Agora que eu já sei um pouco mais sobre você, posso tanto te ensinar sobre educação financeira a partir dos cursos disponíveis, ou então, faça qualquer pergunta para mim.")
+
+course = print("\nDucker: Cursos disponíveis:")
+for course in courses:
+    print(f"- {course['name']}")
+
+
+llm = ChatOpenAI(model=os.getenv("OPEN_AI_MODEL"), temperature=0)
 ### Contextualize question ###
 contextualize_q_system_prompt = """Given a chat history and the latest user question \
 which might reference context in the chat history, formulate a standalone question \
@@ -56,10 +85,14 @@ history_aware_retriever = create_history_aware_retriever(
 
 
 ### Answer question ###
-qa_system_prompt = """You are an assistant for question-answering tasks. \
-Use the following pieces of retrieved context to answer the question. \
-If you don't know the answer, just say that you don't know. \
-Use three sentences maximum and keep the answer concise.\
+qa_system_prompt = """
+Você é um educador especializado e é responsável por acompanhar o usuário neste plano de aula. 
+Certifique-se de guiá-los ao longo do processo, incentivando-os a progredir quando apropriado. 
+Personalize suas respostas e método de ensino de acordo com o perfil de investimento do usuário: {user_info}.
+Por favor, limite qualquer resposta a apenas um conceito ou etapa por vez. 
+Esta é uma aula interativa - não dê palestras, mas sim envolva e guie-os ao longo do caminho!
+
+Utilize o contexto abaixo para guiar o usuário pelo curso:
 
 {context}"""
 qa_prompt = ChatPromptTemplate.from_messages(
@@ -95,7 +128,7 @@ chat_history = []
 while True:
     question = input("\nVocê: ")
     response = conversational_rag_chain.invoke(
-        {"input": question, "chat_history": chat_history},
+        {"input": question, "chat_history": chat_history, "user_info": user_info},
         config=config,
     )
 
