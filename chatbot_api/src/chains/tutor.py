@@ -13,7 +13,7 @@ import json
 import streamlit as st
 import os
 os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
-from langchain_chroma import Chroma
+from langchain_community.vectorstores import FAISS
 
 
 OPEN_API_KEY = st.secrets["OPENAI_API_KEY"]
@@ -34,7 +34,7 @@ docs = loader.load()
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 splits = text_splitter.split_documents(docs)
-vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings())
+vectorstore = FAISS.from_documents(documents=splits, embedding=OpenAIEmbeddings())
 retriever = vectorstore.as_retriever()
 
 ### Inicializar o modelo de linguagem
