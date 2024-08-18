@@ -20,7 +20,7 @@ langserve==0.2.2
 langsmith==0.1.82
 lxml==5.2.2
 openai==1.35.7
-pysqlite3-binary==3.35.0
+pysqlite3-binary==0.5.3
 python-dotenv==1.0.1
 SQLAlchemy==2.0.29
 streamlit==1.37.1
