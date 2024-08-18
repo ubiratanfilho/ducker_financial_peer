@@ -114,7 +114,6 @@ pyreadline3==3.4.1
 python-dotenv==1.0.1
 python-iso639==2024.4.27
 python-magic==0.4.27
-python-magic-bin==0.4.14
 python-multipart==0.0.9
 pytz==2024.1
 pywin32==305.1
