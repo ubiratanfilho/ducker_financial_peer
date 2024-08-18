@@ -35,7 +35,7 @@ vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings
 retriever = vectorstore.as_retriever()
 
 ### Inicializar o modelo de linguagem
-llm = ChatOpenAI(st.secrets('OPEN_AI_MODEL'), temperature=0)
+llm = ChatOpenAI(model_name=str(st.secrets['OPEN_AI_MODEL']), temperature=0)
 
 ### Etapa de contextualização
 contextualize_q_system_prompt = """Given a chat history and the latest user question \
