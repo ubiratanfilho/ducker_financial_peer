@@ -11,7 +11,6 @@ from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 import dotenv
 import os
-from langchain_core.messages import HumanMessage
 import json
 
 dotenv.load_dotenv()
@@ -34,38 +33,6 @@ text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=20
 splits = text_splitter.split_documents(docs)
 vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings())
 retriever = vectorstore.as_retriever()
-
-### Perguntas iniciais sobre o usuário
-system_questions = [
-"""Olá! Eu sou o Ducker, seu assistente de investimentos. Para que eu possa te ajudar, vou fazer algumas perguntas. Qual é o seu nome?""",
-"""Qual é o seu objetivo financeiro? Digite o número correspondente:
-
-1. Juntar dinheiro para a aposentadoria
-2. Comprar um carro
-3. Comprar uma casa
-4. Fazer uma viagem
-5. Outro (especifique)
-""",
-"""Qual é o seu perfil de investidor? Digite o número correspondente:
-1. Conservador - prefere investimentos de baixo risco
-2. Moderado - aceita um pouco de risco para obter maior rentabilidade
-3. Agressivo - busca obter a maior rentabilidade possível, mesmo que isso implique em correr mais riscos
-"""
-]
-
-user_info = {}
-for system_question in system_questions:
-    print(f"Ducker: {system_question}")
-    user_answer = input("Você: ")
-    user_info[system_question] = user_answer
-    print("\n")
-    
-print("\nDucker: Perfeito! Agora que eu já sei um pouco mais sobre você, posso tanto te ensinar sobre educação financeira a partir dos cursos disponíveis, ou então, faça qualquer pergunta para mim.")
-
-### Exibir cursos disponíveis
-course = print("\nDucker: Cursos disponíveis:")
-for course in courses:
-    print(f"- {course['name']}")
 
 ### Inicializar o modelo de linguagem
 llm = ChatOpenAI(model=os.getenv("OPEN_AI_MODEL"), temperature=0)
@@ -125,16 +92,3 @@ conversational_rag_chain = RunnableWithMessageHistory(
     history_messages_key="chat_history",
     output_messages_key="answer",
 )
-
-config = {"configurable": {"session_id": "abc11"}}
-chat_history = []
-while True:
-    question = input("\nVocê: ")
-    response = conversational_rag_chain.invoke(
-        {"input": question, "chat_history": chat_history, "user_info": user_info},
-        config=config,
-    )
-
-    print("\nDucker:", response['answer'])
-    
-    chat_history.extend([HumanMessage(content=question), response['answer']])
