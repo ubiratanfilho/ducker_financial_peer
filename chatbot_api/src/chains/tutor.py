@@ -11,9 +11,10 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 import json
 import streamlit as st
-from langchain_chroma import Chroma
 import os
 os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
+from langchain_chroma import Chroma
+
 
 OPEN_API_KEY = st.secrets["OPENAI_API_KEY"]
 
