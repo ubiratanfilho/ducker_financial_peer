@@ -12,6 +12,9 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 import os
 import json
 import streamlit as st
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 OPEN_API_KEY = st.secrets["OPENAI_API_KEY"]
 
