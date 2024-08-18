@@ -7,14 +7,20 @@ import json
 
 dotenv.load_dotenv()
 
-if "messages" not in st.session_state:
+if "messages" not in st.session_state:    
     with open('data/courses.json', 'r', encoding='utf-8') as file:
         courses = json.load(file)["courses"]
     
-    courses_str = "\n".join([f"{i+1}. {course['name']}" for i, course in enumerate(courses)])
+    courses_str = "\n".join([f"- {course['name']}" for i, course in enumerate(courses)])
     st.session_state.messages = [
-        {"role": "assistant", "content": "Olá! Eu sou o Ducker, seu assistente de investimentos. Eu posso tanto te ensinar sobre educação financeira a partir dos cursos disponíveis, ou então, faça qualquer pergunta para mim."},
-        {"role": "assistant", "content": "Cursos disponíveis:\n" + courses_str},
+        {"role": "assistant", "content": f"""
+Olá! Eu sou o Ducker, seu tutor financeiro. Eu posso tanto te ensinar sobre educação financeira a partir dos cursos disponíveis, ou então, faça qualquer pergunta para mim. Para eu personalizar seu aprendizado, preencha ao lado as informações solicitadas.
+
+**Cursos disponíveis:**
+{courses_str}
+
+O que você gostaria de fazer hoje?
+"""},
     ]
 
 with st.sidebar:
@@ -22,11 +28,9 @@ with st.sidebar:
     
     st.markdown("### Sobre você")
     st.markdown("Para que eu possa te ajudar, preciso de algumas informações sobre você.")
-    st.markdown("Qual é o seu nome?")
-    user_name = st.text_input("Digite aqui...", key="user_name")
-    st.markdown("Qual é o seu objetivo financeiro?")
+    user_name = st.text_input("Qual é o seu nome?", key="user_name")
     user_goal = st.selectbox(
-        "Selecione uma opção",
+        "Qual é o seu objetivo financeiro?",
         [
             "Juntar dinheiro para a aposentadoria",
             "Comprar um carro",
@@ -37,9 +41,8 @@ with st.sidebar:
     )
     if user_goal == "Outro (especifique)":
         user_goal = st.text_input("Digite aqui...", key="user_goal_other")
-    st.markdown("Qual é o seu perfil de investidor?")
     user_investor_profile = st.selectbox(
-        "Selecione uma opção",
+        "Qual é o seu perfil de investidor?",
         [
             "Conservador",
             "Moderado",
