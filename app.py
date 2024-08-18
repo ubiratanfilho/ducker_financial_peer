@@ -1,11 +1,8 @@
-import os
-import requests
 import streamlit as st
-import dotenv
 from chatbot_api.src.chains.tutor import conversational_rag_chain
 import json
 
-dotenv.load_dotenv()
+OPEN_API_KEY = st.secrets["OPENAI_API_KEY"]
 
 if "messages" not in st.session_state:    
     with open('data/courses.json', 'r', encoding='utf-8') as file:

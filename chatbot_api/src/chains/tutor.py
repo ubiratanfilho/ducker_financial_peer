@@ -9,11 +9,11 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-import dotenv
 import os
 import json
+import streamlit as st
 
-dotenv.load_dotenv()
+OPEN_API_KEY = st.secrets["OPENAI_API_KEY"]
 
 ### Carregar o vector store e retriever
 with open('data/courses.json', 'r', encoding='utf-8') as file:
@@ -35,7 +35,7 @@ vectorstore = Chroma.from_documents(documents=splits, embedding=OpenAIEmbeddings
 retriever = vectorstore.as_retriever()
 
 ### Inicializar o modelo de linguagem
-llm = ChatOpenAI(model=os.getenv("OPEN_AI_MODEL"), temperature=0)
+llm = ChatOpenAI(st.secrets('OPEN_AI_MODEL'), temperature=0)
 
 ### Etapa de contextualização
 contextualize_q_system_prompt = """Given a chat history and the latest user question \
