@@ -2,7 +2,7 @@
 # import sys
 # sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import streamlit as st
-from chatbot_api.src.chains.tutor import conversational_rag_chain
+from chatbot.tutor import conversational_rag_chain
 import json
 
 OPEN_API_KEY = st.secrets["OPENAI_API_KEY"]
