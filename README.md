@@ -23,7 +23,7 @@ Link para a aplicação: https://ducker.streamlit.app/
 3. Adicione um arquivo `secrets.toml` dentro da pasta `.streamlit/` com as seguintes informações:
     ```toml
     OPEN_AI_API_KEY = "sua_chave_de_api"
-    OPEN_AI_MODEL = "sua_chave_de_modelo" (exemplo "gpt-3.5-turbo")
+    OPEN_AI_MODEL = "sua_chave_de_modelo"  # (exemplo "gpt-3.5-turbo")
     ```
 
 4. Execute a aplicação
