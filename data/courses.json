@@ -22,58 +22,18 @@
         },
         {
             "id": 5,
-            "name": "Como funciona a Poupança: ainda vale a pena investir?",
-            "url": "https://www.suno.com.br/guias/poupanca/"
-        },
-        {
-            "id": 6,
             "name": "Fundos Imobiliários: tudo o que você precisa saber para começar a investir",
             "url": "https://www.infomoney.com.br/guias/fundos-imobiliarios/"
         },
         {
-            "id": 7,
+            "id": 6,
             "name": "Investir em dólar: qual o momento certo e quais as opções de investimentos?",
             "url": "https://www.infomoney.com.br/guias/investir-em-dolar/"
         },
         {
-            "id": 8,
-            "name": "Como declarar ações no Imposto de Renda 2024",
-            "url": "https://www.infomoney.com.br/guias/declarar-acoes-imposto-de-renda-ir/"
-        },
-        {
-            "id": 9,
-            "name": "Como declarar day trade no Imposto de Renda 2024",
-            "url": "https://www.infomoney.com.br/guias/como-declarar-day-trade-no-imposto-de-renda/"
-        },
-        {
-            "id": 10,
-            "name": "Como declarar dividendos no Imposto de Renda 2024",
-            "url": "https://www.infomoney.com.br/guias/dividendos-imposto-de-renda-ir/"
-        },
-        {
-            "id": 11,
-            "name": "Como declarar ETFs no Imposto de Renda 2024",
-            "url": "https://www.infomoney.com.br/guias/declarar-etf-imposto-de-renda-ir/"
-        },
-        {
-            "id": 12,
-            "name": "Como declarar BDRs no Imposto de Renda 2024",
-            "url": "https://www.infomoney.com.br/guias/bdr-imposto-de-renda-ir/"
-        },
-        {
-            "id": 13,
-            "name": "Como declarar fundos imobiliários no Imposto de Renda",
-            "url": "https://www.infomoney.com.br/guias/fundos-imobiliarios-fiis-imposto-de-renda-ir/"
-        },
-        {
-            "id": 14,
+            "id": 7,
             "name": "Criptomoedas: Um guia para dar os primeiros passos com as moedas digitais",
             "url": "https://www.infomoney.com.br/guias/criptomoedas/"
-        },
-        {
-            "id": 15,
-            "name": "Entenda como funciona o mercado de ações e a bolsa de valores",
-            "url": "https://www.infomoney.com.br/guias/mercado-de-acoes/"
         }
     ]
 }
