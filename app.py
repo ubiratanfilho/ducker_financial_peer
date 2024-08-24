@@ -4,11 +4,12 @@ import json
 
 OPEN_API_KEY = st.secrets["OPENAI_API_KEY"]
 
-if "messages" not in st.session_state:    
-    with open('data/courses.json', 'r', encoding='utf-8') as file:
+with open('data/courses.json', 'r', encoding='utf-8') as file:
         courses = json.load(file)["courses"]
     
-    courses_str = "\n".join([f"- {course['name']}" for i, course in enumerate(courses)])
+courses_str = "\n".join([f"- {course['name']}" for i, course in enumerate(courses)])
+
+if "messages" not in st.session_state:    
     st.session_state.messages = [
         {"role": "assistant", "content": f"""
 Olá! Eu sou o Ducker, seu tutor financeiro. Eu posso tanto te ensinar sobre educação financeira a partir dos cursos disponíveis, ou então, faça qualquer pergunta para mim. Para eu personalizar seu aprendizado, preencha ao lado as informações solicitadas.
@@ -58,7 +59,10 @@ if prompt := st.chat_input("Digite aqui..."):
     st.chat_message("user").markdown(prompt)
     st.session_state.messages.append({"role": "user", "content": prompt})
     
-    data = {"input": prompt, "user_info": {"name": user_name, "goal": user_goal, "investor_profile": user_investor_profile}}
+    data = {"input": prompt, 
+            "user_info": {"name": user_name, "goal": user_goal, "investor_profile": user_investor_profile},
+            "courses_str": courses_str
+    }
     
     with st.spinner("Carregando..."):
         config = {'configurable': {'session_id': '1'}}
