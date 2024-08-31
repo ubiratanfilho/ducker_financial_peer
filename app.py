@@ -1,16 +1,24 @@
 import streamlit as st
 from chatbot.tutor import conversational_rag_chain
 import json
+import numpy as np
 
 OPEN_API_KEY = st.secrets["OPENAI_API_KEY"]
+BOT_ICON = 'images/logo.webp'
+USER_ICON = 'user'
 
-if "messages" not in st.session_state:    
-    with open('data/courses.json', 'r', encoding='utf-8') as file:
+
+
+with open('data/courses.json', 'r', encoding='utf-8') as file:
         courses = json.load(file)["courses"]
     
-    courses_str = "\n".join([f"- {course['name']}" for i, course in enumerate(courses)])
+courses_str = "\n".join([f"- {course['name']}" for i, course in enumerate(courses)])
+
+if "messages" not in st.session_state:    
     st.session_state.messages = [
-        {"role": "assistant", "content": f"""
+        {"role": "assistant", 
+        "avatar": BOT_ICON,
+        "content": f"""
 Olá! Eu sou o Ducker, seu tutor financeiro. Eu posso tanto te ensinar sobre educação financeira a partir dos cursos disponíveis, ou então, faça qualquer pergunta para mim. Para eu personalizar seu aprendizado, preencha ao lado as informações solicitadas.
 
 **Cursos disponíveis:**
@@ -19,6 +27,9 @@ Olá! Eu sou o Ducker, seu tutor financeiro. Eu posso tanto te ensinar sobre edu
 O que você gostaria de fazer hoje?
 """},
     ]
+    
+if "session_id" not in st.session_state:
+    st.session_state.session_id = np.random.randint(0, 1000000)
 
 with st.sidebar:
     st.image("images/logo.png", width=200)
@@ -51,18 +62,21 @@ st.title("Ducker AI - Seu Tutor Financeiro")
 st.info('O Ducker é um assistente virtual que a partir de uma base de conhecimento de cursos de finanças, te ensina sobre educação financeira. Faça uma pergunta ou então peça para ele te ensinar sobre um tópico específico.')
 
 for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
+    with st.chat_message(message["role"], avatar=message['avatar']):
         st.markdown(message["content"])
     
 if prompt := st.chat_input("Digite aqui..."):
-    st.chat_message("user").markdown(prompt)
-    st.session_state.messages.append({"role": "user", "content": prompt})
+    st.chat_message("user", avatar=USER_ICON).markdown(prompt)
+    st.session_state.messages.append({"role": "user", "content": prompt, "avatar": USER_ICON})
     
-    data = {"input": prompt, "user_info": {"name": user_name, "goal": user_goal, "investor_profile": user_investor_profile}}
+    data = {"input": prompt, 
+            "user_info": {"name": user_name, "goal": user_goal, "investor_profile": user_investor_profile},
+            "courses_str": courses_str
+    }
     
     with st.spinner("Carregando..."):
-        config = {'configurable': {'session_id': '1'}}
+        config = {'configurable': {'session_id': st.session_state.session_id}}
         response = conversational_rag_chain.invoke(data, config=config)
     
-    st.chat_message("assistant").markdown(response['answer'])
-    st.session_state.messages.append({"role": "assistant", "content": response['answer']})
+    st.chat_message("assistant", avatar=BOT_ICON).markdown(response['answer'])
+    st.session_state.messages.append({"role": "assistant", "content": response['answer'], "avatar": BOT_ICON})

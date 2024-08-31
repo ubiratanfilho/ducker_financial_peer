@@ -21,6 +21,8 @@ OPEN_API_KEY = st.secrets["OPENAI_API_KEY"]
 ### Carregar o vector store e retriever
 with open('data/courses.json', 'r', encoding='utf-8') as file:
     courses = json.load(file)["courses"]
+    
+courses_str = "\n".join([f"- {course['name']}" for i, course in enumerate(courses)])
 loader = WebBaseLoader(
     web_paths=tuple([course['url'] for course in courses]),
     bs_kwargs=dict(
@@ -59,9 +61,11 @@ history_aware_retriever = create_history_aware_retriever(
 
 ### Etapa de perguntas e respostas
 qa_system_prompt = """
-Você é um educador especializado e é responsável por acompanhar o usuário neste plano de aula. 
+Você é um educador especializado e é responsável por acompanhar o usuário neste plano de aula.
 Certifique-se de guiá-los ao longo do processo, incentivando-os a progredir quando apropriado. 
+Os cursos disponíveis são: {courses_str}.
 Personalize suas respostas e método de ensino de acordo com o perfil de investimento do usuário: {user_info}.
+Caso o usuário faça uma pergunta não relacionada ao mercado financeiro, gentilmente redirecione a conversa de volta ao curso caso o curso esteja em andamento, caso contrário forneça a lista de cursos disponíveis.
 Por favor, limite qualquer resposta a apenas um conceito ou etapa por vez. 
 Esta é uma aula interativa - não dê palestras, mas sim envolva e guie-os ao longo do caminho!
 
