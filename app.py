@@ -44,13 +44,9 @@ Como posso te ajudar?
 if "session_id" not in st.session_state:
     st.session_state.session_id = np.random.randint(0, 1000000)
 
-# Construção do front-end
-col1, col2 = st.columns([0.8, 0.2])
-with col1:
-    st.title("Ducker AI")
-    st.subheader("Seu tutor financeiro")
-with col2:
-    st.image(LOGO, width=150)
+# Interface do chatbot
+st.title("Ducker AI")
+st.subheader("Seu tutor financeiro")
 st.info('O Ducker é um assistente virtual que a partir de uma base de conhecimento de cursos de finanças, te ensina sobre educação financeira. Faça uma pergunta ou então peça para ele te ensinar sobre um tópico específico.')
 
 ## Mensagens do chatbot
@@ -69,7 +65,8 @@ for idx, message in enumerate(st.session_state.messages):
                 "Fazer uma viagem",
                 "Outro (especifique)",
             ],
-            index=None
+            index=None,
+            placeholder="Selecione uma opção..."
         )
         if st.session_state.user_goal == "Outro (especifique)":
             st.session_state.user_goal = st.text_input("Digite aqui...")
@@ -80,7 +77,8 @@ for idx, message in enumerate(st.session_state.messages):
                 "Moderado",
                 "Agressivo",
             ],
-            index=None
+            index=None,
+            placeholder="Selecione uma opção..."
         )
         
         while not (st.session_state.user_name and st.session_state.user_goal and st.session_state.user_investor_profile):
