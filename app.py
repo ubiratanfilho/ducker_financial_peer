@@ -4,7 +4,9 @@ import json
 import numpy as np
 
 OPEN_API_KEY = st.secrets["OPENAI_API_KEY"]
-LOGO_PATH = 'images/logo.webp'
+BOT_ICON = 'images/logo.webp'
+USER_ICON = 'user'
+
 
 
 with open('data/courses.json', 'r', encoding='utf-8') as file:
@@ -15,7 +17,7 @@ courses_str = "\n".join([f"- {course['name']}" for i, course in enumerate(course
 if "messages" not in st.session_state:    
     st.session_state.messages = [
         {"role": "assistant", 
-        "avatar": LOGO_PATH,
+        "avatar": BOT_ICON,
         "content": f"""
 Olá! Eu sou o Ducker, seu tutor financeiro. Eu posso tanto te ensinar sobre educação financeira a partir dos cursos disponíveis, ou então, faça qualquer pergunta para mim. Para eu personalizar seu aprendizado, preencha ao lado as informações solicitadas.
 
@@ -64,8 +66,8 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
     
 if prompt := st.chat_input("Digite aqui..."):
-    st.chat_message("user").markdown(prompt)
-    st.session_state.messages.append({"role": "user", "content": prompt, "avatar": None})
+    st.chat_message("user", avatar=USER_ICON).markdown(prompt)
+    st.session_state.messages.append({"role": "user", "content": prompt, "avatar": USER_ICON})
     
     data = {"input": prompt, 
             "user_info": {"name": user_name, "goal": user_goal, "investor_profile": user_investor_profile},
@@ -76,5 +78,5 @@ if prompt := st.chat_input("Digite aqui..."):
         config = {'configurable': {'session_id': st.session_state.session_id}}
         response = conversational_rag_chain.invoke(data, config=config)
     
-    st.chat_message("assistant", avatar=LOGO_PATH).markdown(response['answer'])
-    st.session_state.messages.append({"role": "assistant", "content": response['answer'], "avatar": LOGO_PATH})
+    st.chat_message("assistant", avatar=BOT_ICON).markdown(response['answer'])
+    st.session_state.messages.append({"role": "assistant", "content": response['answer'], "avatar": BOT_ICON})
