@@ -1,7 +1,6 @@
 # Ducker - Seu Tutor de Educação Financeira
 
-
-![](images/tutorial_ducker.mp4)
+https://github.com/user-attachments/assets/55126218-f494-46ac-837f-0f97c342c475
 
 ## Descrição
 
