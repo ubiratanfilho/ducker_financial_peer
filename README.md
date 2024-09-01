@@ -2,7 +2,8 @@
 
 <img src="images\logo.webp" alt="Logo do Ducker" width="100"/>
 
-<iframe src="https://giphy.com/embed/2a01NHfB3sj9Ba4zTc" width="480" height="269" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/2a01NHfB3sj9Ba4zTc">via GIPHY</a></p>
+## Vídeo
+![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmozejR6ZXloZ3ZseGVtZjR2Z2FtMGc1Mm1xbTlhc3JwNGFmZWo5MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2a01NHfB3sj9Ba4zTc/giphy.gif)
 
 ## Descrição
 
