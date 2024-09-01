@@ -2,6 +2,8 @@
 
 <img src="images\logo.webp" alt="Logo do Ducker" width="100"/>
 
+<iframe src="https://giphy.com/embed/2a01NHfB3sj9Ba4zTc" width="480" height="269" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/2a01NHfB3sj9Ba4zTc">via GIPHY</a></p>
+
 ## Descrição
 
 O Ducker é uma aplicação de IA Generativa que tem como objetivo ensinar o usuário sobre educação financeira a partir de um catálogo de cursos interativos.
