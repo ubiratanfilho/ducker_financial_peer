@@ -5,6 +5,10 @@ import numpy as np
 
 # Variáveis globais
 OPEN_API_KEY = st.secrets["OPENAI_API_KEY"]
+LANGCHAIN_TRACING_V2 = st.secrets["LANGCHAIN_TRACING_V2"]
+LANGCHAIN_PROJECT = st.secrets["LANGCHAIN_PROJECT"]
+LANGCHAIN_API_KEY = st.secrets["LANGCHAIN_API_KEY"]
+LANGCHAIN_ENDPOINT = st.secrets["LANGCHAIN_ENDPOINT"]
 BOT_ICON = 'images/logo.webp'
 LOGO = 'images/logo.png'
 USER_ICON = 'user'
