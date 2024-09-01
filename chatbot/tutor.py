@@ -17,26 +17,37 @@ from langchain_community.vectorstores import FAISS
 
 
 OPEN_API_KEY = st.secrets["OPENAI_API_KEY"]
+FAISS_PATH = "data/faiss_index"
 
 ### Carregar o vector store e retriever
 with open('data/courses.json', 'r', encoding='utf-8') as file:
     courses = json.load(file)["courses"]
     
 courses_str = "\n".join([f"- {course['name']}" for i, course in enumerate(courses)])
-loader = WebBaseLoader(
+
+
+# Check if the FAISS index exists
+if os.path.exists(FAISS_PATH):
+    # Load the existing FAISS index
+    vectorstore = FAISS.load_local(FAISS_PATH, OpenAIEmbeddings(), allow_dangerous_deserialization=True)
+else:
+    loader = WebBaseLoader(
     web_paths=tuple([course['url'] for course in courses]),
     bs_kwargs=dict(
         parse_only=bs4.SoupStrainer(
             class_=("imds-font-headline mt-4 mb-0", 'lead lh-sm mt-2 mb-0 col-xxl-10', 'article-body mt-4')
-        )
-    ),
-)
+            )
+        ),
+    )
+    docs = loader.load()
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    splits = text_splitter.split_documents(docs)
+    
+    # Create a new FAISS index
+    vectorstore = FAISS.from_documents(documents=splits, embedding=OpenAIEmbeddings())
+    # Save the FAISS index for future use
+    vectorstore.save_local(FAISS_PATH)
 
-docs = loader.load()
-
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-splits = text_splitter.split_documents(docs)
-vectorstore = FAISS.from_documents(documents=splits, embedding=OpenAIEmbeddings())
 retriever = vectorstore.as_retriever()
 
 ### Inicializar o modelo de linguagem
