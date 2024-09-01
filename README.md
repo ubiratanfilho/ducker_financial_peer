@@ -1,6 +1,6 @@
 # Ducker - Seu Tutor de Educação Financeira
 
-<img src="images\logo.webp" alt="Logo do Ducker" width="100"/>
+https://github.com/user-attachments/assets/55126218-f494-46ac-837f-0f97c342c475
 
 ## Descrição
 
