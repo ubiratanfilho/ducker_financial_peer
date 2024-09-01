@@ -1,9 +1,7 @@
 # Ducker - Seu Tutor de Educação Financeira
 
-<img src="images\logo.webp" alt="Logo do Ducker" width="100"/>
 
-## Vídeo
-![](https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmozejR6ZXloZ3ZseGVtZjR2Z2FtMGc1Mm1xbTlhc3JwNGFmZWo5MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2a01NHfB3sj9Ba4zTc/giphy.gif)
+<img src="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmozejR6ZXloZ3ZseGVtZjR2Z2FtMGc1Mm1xbTlhc3JwNGFmZWo5MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2a01NHfB3sj9Ba4zTc/giphy.gif" width="100%">
 
 ## Descrição
 
