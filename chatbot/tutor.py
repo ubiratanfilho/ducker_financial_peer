@@ -15,7 +15,11 @@ import os
 os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
 from langchain_community.vectorstores import FAISS
 
-
+# Variáveis globais
+LANGCHAIN_TRACING_V2 = st.secrets["LANGCHAIN_TRACING_V2"]
+LANGCHAIN_PROJECT = st.secrets["LANGCHAIN_PROJECT"]
+LANGCHAIN_API_KEY = st.secrets["LANGCHAIN_API_KEY"]
+LANGCHAIN_ENDPOINT = st.secrets["LANGCHAIN_ENDPOINT"]
 OPEN_API_KEY = st.secrets["OPENAI_API_KEY"]
 FAISS_PATH = "data/faiss_index"
 
