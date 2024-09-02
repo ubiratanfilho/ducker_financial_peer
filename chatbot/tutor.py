@@ -101,9 +101,16 @@ rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chai
 
 ### Salvar o histórico da conversa
 store = {}
+# Define o número máximo de mensagens no histórico
+MAX_HISTORY_LENGTH = 10
+
 def get_session_history(session_id: str) -> BaseChatMessageHistory:
     if session_id not in store:
         store[session_id] = ChatMessageHistory()
+    # Limita o histórico ao número máximo de mensagens
+    if len(store[session_id].messages) > MAX_HISTORY_LENGTH:
+        store[session_id].messages = store[session_id].messages[-MAX_HISTORY_LENGTH:]
+        
     return store[session_id]
 
 
