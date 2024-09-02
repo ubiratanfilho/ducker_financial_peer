@@ -51,7 +51,10 @@ if "session_id" not in st.session_state:
 # Interface do chatbot
 st.title("Ducker AI")
 st.subheader("Seu tutor financeiro")
-st.info('O Ducker é um assistente virtual que a partir de uma base de conhecimento de cursos de finanças, te ensina sobre educação financeira. Faça uma pergunta ou então peça para ele te ensinar sobre um tópico específico.')
+st.info('''O Ducker é um assistente virtual que a partir de uma base de conhecimento de cursos de finanças, te ensina sobre educação financeira. Faça uma pergunta ou então peça para ele te ensinar sobre um tópico específico.
+        
+Gostou da ferramenta ou tem alguma sugestão de melhoria? Preencha nossa [pesquisa de satisfação](https://docs.google.com/forms/d/e/1FAIpQLSf8ANIiXAqMw_0wzQ6ExNQzF2Z6PgBdNNcefFr3FVXUzhVJ3Q/viewform).
+''')
 
 ## Mensagens do chatbot
 for idx, message in enumerate(st.session_state.messages):
