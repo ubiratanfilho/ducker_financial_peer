@@ -1,0 +1,38 @@
+graph TD
+    subgraph Vector-Store
+        A[Carregar armazenamento vetorial ou criar índice FAISS]
+        B[Carregar documentos da web]
+        C[Dividir documentos em partes]
+        D[Criar índice FAISS]
+        E[Recuperador]
+        A --> |Índice existente| E
+        A --> |Índice não encontrado| B
+        B --> C
+        C --> D
+        D --> E
+    end
+
+    subgraph Etapa de Contextualização
+        F[Inicialização da LLM]
+        G[Histórico de conversa + nova pergunta do usuário]
+        H[Contextualizar pergunta]
+        F --> G
+        G --> H[Pergunta independente]
+    end
+
+    subgraph Etapa de QA
+        I[Prompt de QA com contexto]
+        H --> I
+    end
+
+    subgraph Cadeia de RAG
+        E --> L[Recuperador com histórico]
+        I --> L
+        L --> M[Cadeia de Recuperação]
+    end
+
+    subgraph Cadeia RAG Conversacional
+        N[Armazenar histórico da sessão]
+        M --> O[Executável com Histórico de Mensagens]
+        N --> O
+    end
