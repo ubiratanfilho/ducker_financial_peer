@@ -36,7 +36,7 @@ Olá! Eu sou o Ducker, seu tutor financeiro. Para eu personalizar seu aprendizad
 {"role": "assistant",
 "avatar": BOT_ICON,
 "content": f"""
-Obrigado! Agora, me diga qual curso deseja aprender, ou então faça qualquer pergunta sobre o mercado financeiro.
+Obrigado! Agora, me diga qual curso deseja fazer, ou então faça qualquer pergunta sobre o mercado financeiro.
 
 **Cursos disponíveis:**
 {courses_str}
